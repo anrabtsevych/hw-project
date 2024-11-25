@@ -1,10 +1,9 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AvailabilityController } from './availability.controller';
 import { Room, RoomSchema } from 'src/room/models/room.model';
 import { Availability, AvailabilitySchema } from './models/availability.model';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AvailabilityService } from './availability.service';
-import { RoomModule } from 'src/room/room.module';
 
 @Module({
   imports: [

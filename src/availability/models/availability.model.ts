@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as MSchema } from 'mongoose';
-import { forwardRef } from '@nestjs/common';
 import { Room } from 'src/room/models/room.model';
 import { User } from 'src/users/models/user.model';
 
