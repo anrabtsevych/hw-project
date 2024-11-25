@@ -7,37 +7,43 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateAvailabilityDto } from './dto/create-availability.dto';
+import {
+  CreateAvailabilityDto,
+  UpdateAvailabilityDto,
+} from './dto/create-availability.dto';
+import { AvailabilityService } from './availability.service';
 
 @Controller('availability')
 export class AvailabilityController {
+  constructor(private readonly availabilityService: AvailabilityService) {}
+
   @Get('/all')
   getAll() {
-    return 'All availability';
+    return this.availabilityService.getAllAvailabilities();
   }
 
-  @Get('/date/:date')
-  getByDate() {
-    return 'Availability by date';
-  }
-
-  @Get('roomId/:roomID')
-  getByRoomId(@Param('roomID') roomID: string) {
-    return 'Availability by room ID';
-  }
-
-  @Post()
+  @Post('/new')
   create(@Body() dto: CreateAvailabilityDto) {
-    return 'Create availability';
+    try {
+      const newAvailability = this.availabilityService.createAvailability(dto);
+      return newAvailability;
+    } catch (err) {
+      console.log('error', err);
+      return err;
+    }
   }
 
-  @Put('/:roomId')
-  updateAvailability(@Param('roomId') roomId: string) {
-    return 'Update availability';
+  @Put('/:id')
+  async updateAvailability(
+    @Param('id') id: string,
+    @Body()
+    dto: UpdateAvailabilityDto,
+  ) {
+    return this.availabilityService.updateAvailabilityById(id, dto);
   }
 
   @Delete('/:id')
-  delete() {
-    return 'Delete availability';
+  async delete(@Param('id') id: string) {
+    return this.availabilityService.deleteAvailability(id);
   }
 }

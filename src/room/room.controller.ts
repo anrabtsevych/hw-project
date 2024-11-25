@@ -8,7 +8,6 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { CreateRoomDto, UpdateRoomDto } from './dto/create-room.dto';
 import { RoomService } from './room.service';
@@ -21,23 +20,18 @@ export class RoomController {
   getAllRooms() {
     return this.roomService.findAllRooms();
   }
-  @Get('/search')
-  searchRoomsByKeyword(@Query('keyword') keyword: string) {
-    return;
-  }
 
-  @Get('/availability/:id')
-  getRoomAvailability(@Param('id') id: string) {
-    //TODO: I will add an aggregation query here later
-    return;
+  @Post('/book/:roomId')
+  async bookRoom(@Param('roomId') roomId: string, @Body('date') date: Date) {
+    return this.roomService.bookRoom(roomId, date);
   }
 
   @Get('/:id')
-  getRoomByName(@Param('id') id: string) {
+  getRoomById(@Param('id') id: string) {
     return this.roomService.findRoomById(id);
   }
 
-  @Post()
+  @Post('/new')
   createRoom(@Body() dto: CreateRoomDto) {
     return this.roomService.createRoom(dto);
   }
@@ -54,6 +48,9 @@ export class RoomController {
       throw new HttpException(ROOM_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
-    return deletedRoom;
+    return {
+      message: 'Room has been deleted',
+      statusCode: HttpStatus.NO_CONTENT,
+    };
   }
 }

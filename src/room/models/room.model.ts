@@ -8,9 +8,9 @@ export type RoomDocument = HydratedDocument<Room>;
 @Schema({ timestamps: true, _id: true })
 export class Room {
   @Prop({ type: MSchema.Types.ObjectId, ref: User.name })
-  customer: User;
+  customer?: User;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   number: number;
 
   @Prop()
@@ -18,6 +18,9 @@ export class Room {
 
   @Prop({ required: true, type: Number, min: 0 })
   price: number;
+
+  @Prop({ required: true })
+  name: RoomCapacity;
 
   @Prop({ required: true, enum: RoomCapacity })
   capacity: RoomCapacity;
@@ -29,7 +32,7 @@ export class Room {
   images: string[];
 
   @Prop()
-  photoUrl: string;
+  photoUrl?: string;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);
